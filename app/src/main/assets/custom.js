@@ -52,3 +52,14 @@ if (window.__TAURI__.android) {
   );
   window.__TAURI__.android.startActivity(intent);
 }
+// 给 WebView 加上文件选择回调
+(function() {
+    // 监听 input[type=file]
+    document.addEventListener('click', function(e) {
+        var target = e.target;
+        if (target.tagName === 'INPUT' && target.type === 'file') {
+            // 通知原生层打开文件选择器
+            window.PakePlus && window.PakePlus.openFileChooser();
+        }
+    }, true);
+})();
