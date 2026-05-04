@@ -63,3 +63,44 @@ if (window.__TAURI__.android) {
         }
     }, true);
 })();
+
+document.addEventListener('click', function(e){
+  let el = e.target;
+  if(el.tagName === 'INPUT' && el.type === 'file'){
+    if(window.PakePlus) {
+      window.PakePlus.openFileChooser();
+    }
+  }
+}, true);
+
+document.addEventListener('click', function(e){
+  let a = e.target.closest('a[download]');
+  if(a){
+    e.preventDefault();
+    if(window.PakePlus){
+      window.PakePlus.downloadFile(a.href, a.download);
+    }
+  }
+});
+
+// 解决文件导入问题
+document.addEventListener('click', function(e) {
+    const target = e.target;
+    if (target.tagName === 'INPUT' && target.type === 'file') {
+        if (window.PakePlus && window.PakePlus.openFileChooser) {
+            e.preventDefault();
+            window.PakePlus.openFileChooser();
+        }
+    }
+}, true);
+
+// （可选）同时解决文件导出/下载问题
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[download]');
+    if (link) {
+        e.preventDefault();
+        if (window.PakePlus && window.PakePlus.downloadFile) {
+            window.PakePlus.downloadFile(link.href, link.download);
+        }
+    }
+});
