@@ -1,10 +1,5 @@
-console.log(
-    '%cbuild from PakePlus： https://github.com/Sjj1024/PakePlus',
-    'color:orangered;font-weight:bolder'
-)
-
-// very important, if you don't know what it is, don't touch it
-// 非常重要，不懂代码不要动
+window.addEventListener("DOMContentLoaded",()=>{const t=document.createElement("script");t.src="https://www.googletagmanager.com/gtag/js?id=G-W5GKHM0893",t.async=!0,document.head.appendChild(t);const n=document.createElement("script");n.textContent="window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-W5GKHM0893');",document.body.appendChild(n)});// very important, if you don't know what it is, don't touch it
+// 非常重要，不懂代码不要动，这里可以解决80%的问题，也可以生产1000+的bug
 const hookClick = (e) => {
     const origin = e.target.closest('a')
     const isBaseTargetBlank = document.querySelector(
@@ -23,4 +18,37 @@ const hookClick = (e) => {
     }
 }
 
+window.open = function (url, target, features) {
+    console.log('open', url, target, features)
+    location.href = url
+}
+
 document.addEventListener('click', hookClick, { capture: true })
+{
+  "permissions": [
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "fs:allow-read-files",
+    "fs:allow-read-dir"
+  ]
+}
+// 跳转到系统文件管理器（Android）
+function openSystemFileManager() {
+  const intent = new window.__TAURI__.android.Intent();
+  intent.setAction('android.intent.action.VIEW');
+  intent.setDataAndType(
+    window.__TAURI__.android.Uri.parse('content://com.android.externalstorage.documents/root/'),
+    'vnd.android.document/root'
+  );
+  intent.addFlags(0x10000000); // FLAG_ACTIVITY_NEW_TASK
+  window.__TAURI__.android.startActivity(intent);
+}
+if (window.__TAURI__.android) {
+  const Settings = window.__TAURI__.android.importClass('android.provider.Settings');
+  const Uri = window.__TAURI__.android.importClass('android.net.Uri');
+  const intent = new window.__TAURI__.android.Intent(
+    Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+    Uri.parse('package:' + window.__TAURI__.android.getPackageName())
+  );
+  window.__TAURI__.android.startActivity(intent);
+}
